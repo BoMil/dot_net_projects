@@ -31,3 +31,8 @@
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/obj/Debug/net8.0/CityInfo.API.pdb
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/obj/Debug/net8.0/CityInfo.API.genruntimeconfig.cache
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/obj/Debug/net8.0/ref/CityInfo.API.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/obj/Debug/net8.0/CityInfo.API.sourcelink.json
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll

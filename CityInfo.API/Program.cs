@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers(options =>
     // This will return 406 if client requests an unsupported media type like xml for example.
     options.ReturnHttpNotAcceptable = true;
 })
+.AddNewtonsoftJson()
 // Added this line to support xml requests.
 .AddXmlDataContractSerializerFormatters();
 

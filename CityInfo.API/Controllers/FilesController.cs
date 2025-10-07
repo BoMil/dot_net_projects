@@ -29,10 +29,34 @@ namespace CityInfo.API.Controllers
 
             if (!_fileExtensionContentTypeProvider.TryGetContentType(filePath, out var contentType))
             {
-               contentType = "application/octet-stream";
+                contentType = "application/octet-stream";
             }
             var bytes = System.IO.File.ReadAllBytes(filePath);
             return File(bytes, contentType, Path.GetFileName(filePath));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadFile(IFormFile file)
+        {
+            // Validate the input. Put a limit on the file size to prevent abuse.
+            // Accept only PDF files.
+            if (file == null || file.Length > 20971520 || file.ContentType != "application/pdf")
+            {
+                return BadRequest("No file or invalid one has been uploaded.");
+            }
+
+            // Create a file path. Avoid using file.FileName because an attacker could provide a malicius one, including full paths or relative paths.
+            var path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                $"uploaded_file_{Guid.NewGuid()}.pdf"
+            );
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok("Your file has been uploaded successfully.");
         }
         
     }
