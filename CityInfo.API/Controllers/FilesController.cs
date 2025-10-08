@@ -47,7 +47,7 @@ namespace CityInfo.API.Controllers
 
             // Create a file path. Avoid using file.FileName because an attacker could provide a malicius one, including full paths or relative paths.
             var path = Path.Combine(
-                Directory.GetCurrentDirectory(),
+                Directory.GetCurrentDirectory(), // This will save the file in the current app directory.
                 $"uploaded_file_{Guid.NewGuid()}.pdf"
             );
 

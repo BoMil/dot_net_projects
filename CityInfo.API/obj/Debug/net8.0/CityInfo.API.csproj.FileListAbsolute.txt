@@ -36,3 +36,13 @@
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.AspNetCore.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Extensions.Hosting.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Extensions.Logging.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Formatting.Compact.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Settings.Configuration.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Sinks.Console.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Sinks.Debug.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Serilog.Sinks.File.dll
