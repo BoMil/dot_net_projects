@@ -1,5 +1,7 @@
+using CityInfo.API.DbContexts;
 using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -39,6 +41,10 @@ builder.Services.AddTransient<IMailService, LocalMailService>();// In debug we u
 #else
 builder.Services.AddTransient<IMailService, ClouldMailService>(); // In production we use a cloud mail service
 #endif
+
+builder.Services.AddDbContext<CityInfoContext>(
+    dbContextOptions => dbContextOptions.UseSqlServer(builder.Configuration["ConnectionStrings:CityInfoDBConnectionString"])
+);
 
 var app = builder.Build();
 
