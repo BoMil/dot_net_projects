@@ -4,7 +4,7 @@ using CityInfo.API.Models;
 
 namespace CityInfo.API.Profiles
 {
-    public class PointOfInterestProfile: Profile
+    public class PointOfInterestProfile : Profile
     {
         public PointOfInterestProfile()
         {
@@ -12,6 +12,8 @@ namespace CityInfo.API.Profiles
             CreateMap<PointsOfInterestDto, PointOfInterest>();
             CreateMap<PointOfInterestUpdateDto, PointOfInterest>();
             CreateMap<PointOfInterest, PointOfInterestUpdateDto>();
+            CreateMap<PointOfInterestForCreationDto, PointOfInterest>();
+            CreateMap<PointOfInterest, PointOfInterestForCreationDto>();
         }
     }
 }

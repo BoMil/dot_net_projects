@@ -75,7 +75,7 @@ namespace CityInfo.API.Controllers
                 "Bojaca",
                 "Boki",
                 "Bole",
-                "London"
+                "Antwerp"
             );
         }
 

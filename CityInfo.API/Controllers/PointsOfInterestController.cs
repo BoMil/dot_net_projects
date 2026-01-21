@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityInfo.API.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "MustBeFromAntwerp")]
     [Route("api/cities/{cityId}/pointsOfInterest")]
     public class PointsOfInterestController : ControllerBase
     {
@@ -111,6 +111,19 @@ namespace CityInfo.API.Controllers
                 }
 
                 var finalPointOfInterest = _mapper.Map<PointOfInterest>(pointOfInterestForCreation);
+
+                var pointOfInterestToReturn = _mapper.Map<PointsOfInterestDto>(finalPointOfInterest);
+
+                await _cityInfoRepository.AddPointOfInterestToCityAsync(cityId, finalPointOfInterest);
+
+                // After this call, the finalPointOfInterest will be saved and the id will be auto generated
+                await _cityInfoRepository.SaveChangesAsync();
+
+                return CreatedAtRoute(
+                    "GetPointOfInterest",
+                    new { cityId = cityId, pointsOfInterestId = pointOfInterestToReturn.Id },
+                    pointOfInterestToReturn
+                );
 
                 await _cityInfoRepository.AddPointOfInterestToCityAsync(cityId, finalPointOfInterest);
 
