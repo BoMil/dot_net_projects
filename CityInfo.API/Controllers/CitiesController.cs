@@ -7,12 +7,14 @@ using AutoMapper;
 using CityInfo.API.Entities;
 using CityInfo.API.Models;
 using CityInfo.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfo.API.Controllers
 {
     [ApiController]
+    [Authorize]
     // [Route("api/[controller]")] - this will automatically prefix the route with the base route of the app (https://localhost:7156/api/Cities/)
     [Route("api/cities")]
     public class CitiesController : ControllerBase
@@ -56,7 +58,7 @@ namespace CityInfo.API.Controllers
         // Here we are using IActionResult because we can now return a CityDto or CityWthoutPointOfInterestDto
         public async Task<IActionResult> GetCity(int id, bool includePointsOfInterest = false)
         {
-            var city =  await _cityInfoRepository.GetCityAsync(id, includePointsOfInterest);
+            var city = await _cityInfoRepository.GetCityAsync(id, includePointsOfInterest);
             if (city == null)
             {
                 return NotFound();
@@ -64,9 +66,9 @@ namespace CityInfo.API.Controllers
 
             if (includePointsOfInterest)
             {
-                return  Ok(_mapper.Map<CityDto>(city));
+                return Ok(_mapper.Map<CityDto>(city));
             }
-            return  Ok(_mapper.Map<CityWthoutPointOfInterestDto>(city));
-        }   
+            return Ok(_mapper.Map<CityWthoutPointOfInterestDto>(city));
+        }
     }
 }

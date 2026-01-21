@@ -386,6 +386,7 @@ FodyWeavers.xsd
 
 # Local History for Visual Studio Code
 .history/
+.obj/
 
 # Windows Installer files from build outputs
 *.cab
@@ -393,6 +394,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+*.cache
 
 # JetBrains Rider
 *.sln.iml

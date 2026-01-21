@@ -38,7 +38,7 @@ namespace CityInfo.API.Services
             // ! This store the query command, not result and it is used to improve a performance
             var collection = _context.Cities as IQueryable<City>;
 
-            if(!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 name = name.Trim();
                 collection = collection.Where(c => c.Name.Contains(name));
@@ -52,7 +52,7 @@ namespace CityInfo.API.Services
 
             // ! Query is not executed until we call CountAsync()
             var totalItemsCount = await collection.CountAsync();
-            
+
             var paginationMetadata = new PaginationMetadata(totalItemsCount, pageNumber, pageSize);
 
             var collectionToReturn = await collection
@@ -61,7 +61,7 @@ namespace CityInfo.API.Services
                 .Take(pageSize)
                 .ToListAsync();
 
-                return (collectionToReturn, paginationMetadata);
+            return (collectionToReturn, paginationMetadata);
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest = false)
@@ -107,6 +107,11 @@ namespace CityInfo.API.Services
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> CityNameMatchesCityId(string? cityName, int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Name == cityName && c.Id == cityId);
         }
     }
 

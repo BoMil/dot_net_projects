@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
 namespace CityInfo.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/files")]
     public class FilesController : ControllerBase
     {
@@ -58,6 +60,6 @@ namespace CityInfo.API.Controllers
 
             return Ok("Your file has been uploaded successfully.");
         }
-        
+
     }
 }

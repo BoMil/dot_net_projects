@@ -3,6 +3,7 @@ using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 // Setup Serilog logger
@@ -50,6 +51,22 @@ builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+// This middleware will require a JWT token to be passed in the Authorization header
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(
+    options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(builder.Configuration["Authentication:SecretForKey"] ?? ""))
+        };
+    }
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseRouting();
 
