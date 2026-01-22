@@ -1,9 +1,12 @@
+using System.Reflection;
+using Asp.Versioning;
 using CityInfo.API.DbContexts;
 using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 // Setup Serilog logger
@@ -33,7 +36,41 @@ builder.Services.AddControllers(options =>
 builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    options =>
+    {
+        // This is used to add the xml comments to the swagger
+        var xmlCommnetsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlCommnetsFile);
+        options.IncludeXmlComments(xmlFilePath);
+
+        // This will add Authorize btn in swagger, where we can enter token manually
+        options.AddSecurityDefinition("CityInfoApiBearerAuth", new()
+        {
+            Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+            // Name = "Authorization",
+            // In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "Bearer"
+        });
+
+        options.AddSecurityRequirement(new()
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "CityInfoApiBearerAuth",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                new List<string>()
+            }
+        });
+
+    }
+);
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 // This way we handle our dependency injection, it can be AddTransient, AddScoped, AddSingleton, etc.
@@ -75,6 +112,15 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("city", "Antwerp");
     });
 });
+
+// Setup Versioning
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    // options.ApiVersionReader = new HeaderApiVersionReader("X-Api-Version");
+}).AddMvc();
 
 var app = builder.Build();
 

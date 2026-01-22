@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Asp.Versioning;
 using AutoMapper;
 using CityInfo.API.Entities;
 using CityInfo.API.Models;
@@ -13,8 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityInfo.API.Controllers
 {
     [ApiController]
-    [Authorize(Policy = "MustBeFromAntwerp")]
+    // [Authorize(Policy = "MustBeFromAntwerp")]
     [Route("api/cities/{cityId}/pointsOfInterest")]
+    [ApiVersion(2)]
     public class PointsOfInterestController : ControllerBase
     {
         private ILogger<PointsOfInterestController> _logger;
@@ -124,14 +126,6 @@ namespace CityInfo.API.Controllers
                     new { cityId = cityId, pointsOfInterestId = pointOfInterestToReturn.Id },
                     pointOfInterestToReturn
                 );
-
-                await _cityInfoRepository.AddPointOfInterestToCityAsync(cityId, finalPointOfInterest);
-
-                // After this call, the finalPointOfInterest will be saved and the id will be auto generated
-                await _cityInfoRepository.SaveChangesAsync();
-
-                // This will
-                return CreatedAtRoute("GetPointOfInterest", new { cityId = cityId, pointsOfInterestId = finalPointOfInterest.Id }, finalPointOfInterest);
 
             }
             catch (System.Exception ex)

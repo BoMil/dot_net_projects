@@ -185,3 +185,8 @@
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/AutoMapper.dll
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Asp.Versioning.Abstractions.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Asp.Versioning.Http.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/Asp.Versioning.Mvc.dll
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/bin/Debug/net8.0/CityInfo.API.xml
+/Users/boki/flutter_apps/dot_net_projects/CityInfo.API/obj/Debug/net8.0/CityInfo.API.xml
