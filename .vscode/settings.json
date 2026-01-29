@@ -1,3 +1,5 @@
 {
-    "dotnet.defaultSolution": "CityInfo.sln"
+    "dotnet.defaultSolution": "CityInfo.sln",
+    "appService.defaultWebAppToDeploy": "/subscriptions/fab9fe65-e12d-4831-a1f4-75fd16dc8576/resourceGroups/appsvc_windows_westeurope/providers/Microsoft.Web/sites/CityInfo-web-api",
+    "appService.deploySubpath": "CityInfo.API"
 }

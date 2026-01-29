@@ -1,7 +1,12 @@
 using System.Reflection;
 using Asp.Versioning;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using CityInfo.API.DbContexts;
 using CityInfo.API.Services;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,13 +18,51 @@ using Serilog;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/cityInfo.txt", rollingInterval: RollingInterval.Day)
+    // .WriteTo.File("logs/cityInfo.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+var envirnoment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 // builder.Logging.ClearProviders();
 // builder.Logging.AddConsole();
-builder.Host.UseSerilog();
+
+if (envirnoment == Environments.Development)
+{
+    builder.Host.UseSerilog(
+    (context, configuration) => configuration
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+    );
+}
+else
+{
+    //! This is the example how to use Azure Key Vault to store the secrets
+    // In case we use this code, we need to remove the azure key vault secrets from the appsettings.json file (SecretForKey for example)
+    // var secretClient = new SecretClient(
+    //     new Uri(builder.Configuration["KeyVault:Uri"]),  // Here goes the URI to your Key Vault that you can find in the Azure Portal
+    //     new DefaultAzureCredential()
+    // );
+
+    // builder.Configuration.AddAzureKeyVault(
+    //     secretClient,
+    //     new KeyVaultSecretManager()
+    // );
+
+    builder.Host.UseSerilog(
+     (context, configuration) => configuration
+     .MinimumLevel.Debug()
+     .WriteTo.Console()
+     .WriteTo.File("logs/cityInfo.txt", rollingInterval: RollingInterval.Day)
+     .WriteTo.ApplicationInsights(new TelemetryConfiguration()
+     {
+         // ! This key is located in the Azure Portal
+         ConnectionString = builder.Configuration["ApplicationInsightsInstrumentationKey"]
+     }, TelemetryConverter.Traces)
+     .CreateLogger()
+ );
+}
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -122,6 +165,17 @@ builder.Services.AddApiVersioning(options =>
     // options.ApiVersionReader = new HeaderApiVersionReader("X-Api-Version");
 }).AddMvc();
 
+// Ovaj kod omogućava ASP.NET Core aplikaciji da ispravno prepozna pravi IP korisnika i 
+// pravi protokol (http/https) kada radi iza proxy-ja (azure, nginx, etc.)
+// Ovim govoriš ASP.NET Core aplikaciji da veruje HTTP headerima koje dodaje proxy / load balancer ispred tvoje aplikacije
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+    // ! X-Forwarded-Proto Kaže aplikaciji da li je originalni request bio http ili https
+    // ! X-Forwarded-For Pravi IP adresu krajnjeg korisnika
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -132,15 +186,23 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler();
 }
 
-if (app.Environment.IsDevelopment())
+app.UseForwardedHeaders();
+
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "CityInfo API v1");
+    options.RoutePrefix = "swagger";
+});
+// }
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseStaticFiles();
 
 app.UseRouting();
 

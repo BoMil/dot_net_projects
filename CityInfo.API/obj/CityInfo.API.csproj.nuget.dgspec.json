@@ -51,6 +51,14 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "Azure.Extensions.AspNetCore.Configuration.Secrets": {
+              "target": "Package",
+              "version": "[1.4.0, )"
+            },
+            "Azure.Identity": {
+              "target": "Package",
+              "version": "[1.18.0-beta.2, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.23, )"
@@ -82,6 +90,10 @@
             "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Serilog.Sinks.ApplicationInsights": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Serilog.Sinks.Console": {
               "target": "Package",
